@@ -1,0 +1,22 @@
+
+Directory : 
+			D:\AB_DS Batch 1\Git Codes\AB_DS_Janhavi_Khisti\01_C_Datastructures\02_Vector_Version1\01_ClassCode
+
+Files : 1) mv_vector.h
+		2) mv_vector_server.c
+		3) mv_vector_client.c
+
+
+Description :
+
+1) mv_vector.h : 
+				 This header file contains all the interface function declaration of 'mv_vector'
+	
+2) mv_vector_server.c :
+						This source code file contain all the definitions of interface functions declared in
+			 			 'mv_vector.h' header file
+
+3) mv_vector_client.c :
+						This file contains interface function calls made by client to invoke different functionalities
+						 for managing data
+
