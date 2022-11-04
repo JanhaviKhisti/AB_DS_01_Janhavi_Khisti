@@ -1,11 +1,10 @@
 
 #pragma	once
 
-// Header
 #include	<cstdarg>
 
-
 //	Constant Literals
+
 #ifndef	SUCCESS 
 #define	SUCCESS	0
 #endif
@@ -18,21 +17,19 @@
 #define	DEFAULT_SIZE	32 
 #endif
 
-
 //	Type Declarations
 template<typename T>
 class MVVector;
 
 typedef	int ret_t;
 
-
 //	Global Function Declarations
 
 template<typename T>
-std::ostream& operator<<( std::ostream& out, MVVector<T>& vec );
+std::ostream& operator<<(std::ostream& out, MVVector<T>& vec);
 
 template<typename T>
-std::ostream& operator<<( std::ostream& out, MVVector<T>*& vec );
+std::ostream& operator<<(std::ostream& out, MVVector<T>*& vec);
 
 /*
 	Class:
@@ -44,9 +41,7 @@ std::ostream& operator<<( std::ostream& out, MVVector<T>*& vec );
 template<typename T>
 class MVVector
 {
-
 private:
-
 	T*	m_data_array;
 	size_t	m_no_of_elements;
 	size_t	m_capacity;
@@ -70,22 +65,18 @@ public:
 	{
 		// Code
 		this->m_capacity = DEFAULT_SIZE;
-
 		this->m_no_of_elements = 0;
-
 		this->m_data_array = NULL;
 
 		m_data_array = (T*) realloc( m_data_array, DEFAULT_SIZE * sizeof(T) );
-
 		if( NULL == m_data_array )
 		{
 			std::cerr << "ERROR: Out Of Memory." << std::endl;
 			exit(FAILURE);
 		}
 
-		memset( m_data_array, 0, DEFAULT_SIZE * sizeof(T) );
+		memset(m_data_array, 0, DEFAULT_SIZE * sizeof(T));
 	}
-
 
 	~MVVector()
 	{
@@ -93,11 +84,9 @@ public:
 		if( m_data_array )
 		{
 			free(m_data_array);
-
 			m_data_array = NULL;
 		}
 	}
-
 
 	//	Push Back
 	ret_t PushBack(T data)
@@ -107,19 +96,16 @@ public:
 		if( !IsArray() )
 		{
 			std::cerr << "ERROR: Vector Not Found." << std::endl;
-
 			return(FAILURE);
 		}
 
 		m_data_array[m_no_of_elements] = data;
-
 		m_no_of_elements++;
 
 		if( m_no_of_elements == m_capacity )
 		{
 			m_capacity = m_capacity * 2;
-
-			m_data_array = (T*) realloc( m_data_array, m_capacity * sizeof(T) );
+			m_data_array = (T*) realloc(m_data_array, m_capacity * sizeof(T));
 		}
 
 		return(SUCCESS);
@@ -138,17 +124,14 @@ public:
 		va_list args;
 
 		va_start(args, no_of_values);
-
 		for( long le = 0; le < no_of_values; ++le)
 		{
 			(*this) + va_arg(args, T);
 		}
-
 		va_end(args);
 
 		return(SUCCESS);
 	}
-
 
 	// Pop Back
 	T PopBack()
@@ -169,13 +152,11 @@ public:
 			0 != m_no_of_elements)
 		{
 			m_capacity /= 2;
-
-			m_data_array = (T*) realloc( m_data_array, m_capacity * sizeof(T) ); 
+			m_data_array = (T*) realloc(m_data_array, m_capacity * sizeof(T)); 
 		}
 
 		return(to_return_data);
 	}
-
 
 	//	Retrive Data
 	T DataAt(long index) const
@@ -195,6 +176,44 @@ public:
 		}
 
 		return( m_data_array[index] );
+	}
+
+
+	// TODO : Merge Function
+
+	ret_t vector_merge(MVVector<T>*  to_merge_vector)
+	{
+		// Code
+		if( !IsArray()	||
+			0 == m_no_of_elements)
+		{
+			std::cerr << "ERROR: Vector not found" << std::endl;
+			return(FAILURE);
+		}
+
+		if( !(to_merge_vector->IsArray())	||
+			0 == m_no_of_elements)
+		{
+			std::cerr << "ERROR: Vector not found" << std::endl;
+			return(FAILURE);
+		}
+
+		size_t total_elements = this->m_no_of_elements + to_merge_vector->m_no_of_elements;
+
+		for( size_t  le = 0; le < to_merge_vector->m_no_of_elements; ++le )
+		{
+			if( this->m_capacity <= total_elements )
+			{
+				this->m_capacity = this->m_capacity * 2;
+				this->m_data_array = (T*) realloc(this->m_data_array, this->m_capacity * sizeof(T));
+			}
+
+			this->m_data_array[ this->m_no_of_elements ] = to_merge_vector->m_data_array[ le ];
+
+			this->m_no_of_elements++;
+		}
+
+		return(SUCCESS);
 	}
 
 
@@ -224,108 +243,14 @@ public:
 		return(m_capacity);
 	}
 
-
-	T Replace(long index, T data)
-	{
-		if( !IsArray() )
-		{
-			std::cerr << "ERROR : Vector Not Found." << std::endl;
-			return(FAILURE);
-		}
-
-		if( index >= m_no_of_elements )
-		{
-			std::cerr << "ERROR : Index Out Of Bound." << std::endl;
-			return(FAILURE);
-		}
-
-		T to_return_data = m_data_array[ index ];
-		
-		m_data_array[ index ] = data;
-
-		return(to_return_data); 
-	}
-
-
-	ret_t Insert(long index, T data)
-	{
-		if( !IsArray() )
-		{
-			std::cerr << "ERROR : Vector Not Found." << std::endl;
-			return(FAILURE);
-		}
-
-		if( index >= m_no_of_elements )
-		{
-			std::cerr << "ERROR : Index Out Of Bound." << std::endl;
-			return(FAILURE);
-		}
-
-		m_no_of_elements++;
-
-		if( m_no_of_elements == m_capacity )
-		{
-			m_capacity = m_capacity * 2;
-
-			m_data_array = (T*) realloc( m_data_array, m_capacity * sizeof(T) );
-		}
-
-		for( long le = m_no_of_elements; le > index; le-- )
-		{
-			m_data_array[ le ] = m_data_array[ le -1 ];
-		}
-
-		m_data_array[ index ] = data;
-
-		return(SUCCESS);
-	}
-
-
-	T Remove(long index)
-	{
-		if( !IsArray() )
-		{
-			std::cerr << "ERROR : Vector Not Found." << std::endl;
-			return((T)0);
-		}
-
-		if( index >= m_no_of_elements )
-		{
-			std::cerr << "ERROR : Index Out Of Bound." << std::endl;
-			return((T)0);
-		}
-
-		T to_return_data = m_data_array[ index ];
-
-		for( long le = index; le < m_no_of_elements; le++ )
-		{
-			m_data_array[ le ] = m_data_array[ le+1 ];
-		}
-
-		m_no_of_elements--;
-
-		if( m_no_of_elements <= m_capacity/2 &&
-			0 != m_no_of_elements )
-		{
-			m_capacity /= 2;
-			
-			m_data_array = (T*) realloc(m_data_array, m_capacity * sizeof(T)); 
-		}
-
-		return(to_return_data);
-	}
-
+	
 
 	// Inner Iterator Class
 	class Iterator
 	{
-
 	private:
-
 		T*	m_data_ptr;
-
 	public:
-
 		Iterator(T* data_ptr)
 		{
 			// Code
@@ -344,17 +269,14 @@ public:
 		{
 			// Code
 			this->m_data_ptr++;
-
 			return(*this);
 		}
 
 		//	Post Increment
 		Iterator operator++(int value)
 		{
-			// Code
 			Iterator itr = *this;
 			++*this;
-
 			return(itr);
 		}
 
@@ -363,7 +285,6 @@ public:
 		{
 			// Code
 			m_data_ptr--;
-
 			return(*this);
 		}
 
@@ -373,7 +294,6 @@ public:
 			// Code
 			Iterator itr = *this;
 			--*this;
-
 			return(itr);
 		}
 
@@ -455,45 +375,56 @@ public:
 };
 
 template<typename T>
-std::ostream& operator<<( std::ostream& out, MVVector<T>& vec )
+std::ostream& operator<<(std::ostream& out, MVVector<T>& vec)
 {
 	// Code
+
+	std::cout << "{START}-";
 	for( auto itr = vec.begin();
 	     itr != vec.end();
 	     ++itr )
 	{
-		std::cout << *itr << std::endl;
+		std::cout << "{" << *itr << "}-"; 
 	}
+
+	std::cout << "{END}" << std::endl << std::endl;
 
 	return(out);
 }
 
 template<typename T>
-std::ostream& operator<<( std::ostream& out, MVVector<T>*& vec )
+std::ostream& operator<<(std::ostream& out, MVVector<T>*& vec)
 {
 	// Code
+
+	std::cout << "{START}-";
 	for( auto itr = vec->end()-1;
 	     itr != vec->begin()-1;
 	     itr-- )
 	{
-		std::cout << *itr << std::endl;
+		std::cout << "{" << *itr << "}-";
 	}
+
+	std::cout << "{END}" << std::endl << std::endl;
 
 	return(out);
 }
 
 template<typename T>
-std::ostream& operator<<( std::ostream& out, MVVector<T>*&& vec )
+std::ostream& operator<<(std::ostream& out, MVVector<T>*&& vec)
 {
 	// Code
+
+	std::cout << "{START}-";
 	for( auto itr = vec->end()-1;
 	     itr != vec->begin()-1;
 	     itr-- )
 	{
-		std::cout << *itr << std::endl;
+		std::cout << "{" << *itr << "}-";
 	}
+
+	std::cout << "{END}" << std::endl << std::endl;
 
 	return(out);
 }
-
 

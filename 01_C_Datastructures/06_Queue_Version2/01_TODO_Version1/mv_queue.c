@@ -125,29 +125,29 @@ void *deallocate_pqueue(void *param)
 }
 
 
-static long get_head_print(p_mv_queue_t pqueue)
-{
-	long h = pqueue->head;
+// static long get_head_print(p_mv_queue_t pqueue)
+// {
+// 	long h = pqueue->head;
 
-	if( h >= pqueue->length )
-	{
-		h = 0;
-	}
+// 	if( h >= pqueue->length )
+// 	{
+// 		h = 0;
+// 	}
 
-	return(h);
-}
+// 	return(h);
+// }
 
-static long get_tail_print(p_mv_queue_t pqueue)
-{
-	long t = pqueue->tail - 1;
+// static long get_tail_print(p_mv_queue_t pqueue)
+// {
+// 	long t = pqueue->tail - 1;
 
-	if( t < 0 )
-	{
-		t = pqueue->length - 1; 
-	}
+// 	if( t < 0 )
+// 	{
+// 		t = pqueue->length - 1; 
+// 	}
 
-	return(t);
-}
+// 	return(t);
+// }
 
 
 //	Queue Interface Functions
@@ -366,7 +366,7 @@ extern ret_t mv_queue_print_data(p_mv_queue_t pqueue, PRINTDATAPROC pprintfunc)
 	fprintf(stdout, "\nQUEUE:\n");
 	fprintf(stdout, "\n{START}-");
 
-	for (long le = get_head_print(pqueue);  le != get_tail_print(pqueue);  ++le)
+	for (long le = pqueue->head;  le != pqueue->no_of_elements-1;  ++le)
 	{
 		if (le == pqueue->length)
 		{
@@ -447,7 +447,7 @@ extern ret_t mv_queue_destroy(pp_mv_queue_t ppqueue, DELETEDATAPROC pdeletefunc)
 
 	fprintf(stdout, "\nDestroying QUEUE:\n");
 	fprintf(stdout, "\n{START}\n");
-	for (long le = get_head_print(pqueue); le != get_tail_print(pqueue); ++le)
+	for (long le = pqueue->head; le != pqueue->no_of_elements-1; ++le)
 	{
 		if (le == pqueue->length)
 		{
