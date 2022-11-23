@@ -375,7 +375,7 @@ extern ret_t mv_queue_print_data(p_mv_queue_t pqueue, PRINTDATAPROC pprintfunc)
 		pprintfunc(pqueue->queue[le]);
 	}
 
-	pprintfunc( pqueue->queue[ pqueue->no_of_elements - 1] );
+	pprintfunc( pqueue->queue[ pqueue->no_of_elements - 1 ] );
 
 	fprintf(stdout, "{END}\n");
 

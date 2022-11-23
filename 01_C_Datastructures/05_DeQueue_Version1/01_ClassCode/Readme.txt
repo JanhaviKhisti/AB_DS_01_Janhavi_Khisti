@@ -1,6 +1,6 @@
 
 Directory : 
-			D:\AB_DS Batch 1\Git Codes\AB_DS_Janhavi_Khisti\01_C_Datastructures\04_Queue_Version1\01_ClassCode
+			D:\AB_DS Batch 1\Git Codes\AB_DS_Janhavi_Khisti\01_C_Datastructures\04_DeQueue_Version1\01_ClassCode
 			
 Files :
 		1) mv_dequeue.h
