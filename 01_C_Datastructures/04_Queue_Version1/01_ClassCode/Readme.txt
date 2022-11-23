@@ -34,4 +34,3 @@ Description :
 
 3) mv_queue_client.c : 	
 						This client file contains interface function calls made by client
-

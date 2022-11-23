@@ -1,5 +1,4 @@
 
-
 #ifndef		_MV_QUEUE_H
 #define		_MV_QUEUE_H
 
@@ -45,9 +44,9 @@ struct mv_queue
 
 //	Queue Interface Functions
 
-extern	p_mv_queue_t 	create_default_queue(void);
+extern	p_mv_queue_t 	mv_create_default_queue(void);
 
-extern	p_mv_queue_t	create_custom_queue(size_t nr_of_elements);
+extern	p_mv_queue_t	mv_create_custom_queue(size_t nr_of_elements);
 
 extern	ret_t 	mv_queue_enqueue(p_mv_queue_t pqueue, data_t data);
 
@@ -60,3 +59,4 @@ extern	size_t 	mv_queue_length(p_mv_queue_t pqueue);
 extern	ret_t	mv_queue_destroy( pp_mv_queue_t, DELETEDATAPROC pdeletefunc );
 
 #endif		/* _MV_QUEUE_H */
+
