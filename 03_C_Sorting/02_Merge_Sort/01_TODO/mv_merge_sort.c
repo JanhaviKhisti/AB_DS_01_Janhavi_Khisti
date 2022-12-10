@@ -6,14 +6,14 @@
 #include "mv_merge_sort.h"
 
 
-// Helper Function
+// Helper/Auxillary Functions
 static void* xcalloc(long long no_of_elements, size_t size)
 {
-	// code
+	// Code
 	void* p = calloc(no_of_elements, size);
 	if(p == NULL)
 	{
-		fprintf(stderr, "ERROR : Out Of Memory\n");
+		fprintf(stderr, "ERROR: Out of Memory.\n");
 		return(NULL);
 	}
 
@@ -25,19 +25,20 @@ static void Merge(data_t* array, long long first, long long mid, long long last,
 {
 	long long left_size = mid - first + 1;
 
-	long long right_size = last - (mid+1) +1;
+	long long right_size = last - (mid+1) + 1;
 
 	data_t* left = (data_t*)xcalloc(left_size, sizeof(data_t));
 
-	data_t* right_size = (data_t*)xcalloc(right_size, sizeof(data_t));
+	data_t* right = (data_t*)xcalloc(right_size, sizeof(data_t));
 
 	for(long long le = 0; le < left_size; le++)
-		left[le] = array[first +le];
+		left[le] = array[first + le];
+
 
 	for(long long le = 0; le < right_size; le++)
 		right[le] = array[mid + 1 + le];
 
-	long long left_index = 0;
+	long long left_index = 0; 
 	long long right_index = 0;
 	long long array_index = first;
 
@@ -110,5 +111,3 @@ extern 	void MergeSort(data_t* array, long long size, COMPARE pcompare)
 	Partition(array, 0, size-1, pcompare);
 
 }
-
-
