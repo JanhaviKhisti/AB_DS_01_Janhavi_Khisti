@@ -1,4 +1,10 @@
 
+/**
+ * @File: mv_stack_server.c
+ * @Brief: This contains definitions of functions declared in header file mv_stack.h
+ * @Author: Janhavi Sunil Khisti(janhavikhisti@gmail.com)
+ * @Date: 20-06-2024
+ */
 
 //	Headers
 #include	<stdio.h>
@@ -25,7 +31,12 @@ static	ret_t	error_checking(	const int 	assert_condition,
 																				)
 
 //	Stack Helper Functions
-
+/**
+ * Function Name: Xmalloc
+ * Function Brief: This function will allocate a memory of 'nr_of_bytes' size
+ * Input Params: nr_of_bytes
+ * Returns: The pointer to the memory dynamically allocated of 'nr_of_bytes' size
+ */
 static	void	*Xmalloc(size_t nr_of_bytes)
 {
 	// Code
@@ -38,6 +49,17 @@ static	void	*Xmalloc(size_t nr_of_bytes)
 	return(p);
 }
 
+/**
+ * Function Name: error_checking
+ * Function Brief: This function will check error and either print erroe message of will do assertion
+ * Input Params: 1) Assert Condition
+ *               2) String of Assert condition
+ *               3) File where assertion occured
+ *               4) Line no where assertion occured
+ *               5) Error Condition
+ *               6) Error Message
+ * Returns: Status of the error / asssert checking
+ */
 static	ret_t	error_checking(	const int 	assert_condition,
 								const char* assert_condition_str,
 								const char*	file_name,
@@ -73,8 +95,16 @@ static	ret_t	error_checking(	const int 	assert_condition,
 	return(SUCCESS);
 }
 
+
 //	Stack Interface Functions
 
+// Stack Creation Function
+/**
+ * Function Name: create_stack
+ * Function Brief: This function creates a stack using a doubly linked list implementation and returns a pointer to it
+ * Input Params: none
+ * Returns: Pointer to the created stack.
+ */
 extern	p_mv_stack_t 	create_stack(void)
 {
 	//	Code
@@ -91,6 +121,15 @@ extern	p_mv_stack_t 	create_stack(void)
 	return(pstack);
 }
 
+// Stack Insertion Function
+/**
+ * Function Name: mv_stack_push
+ * Function Brief: This function pushes data onto the top of the stack.
+ * Input Params: 1) Pointer to the stack
+ *				 2) Data to be pushed onto the stack
+ * Returns: Status of push operation
+ *			SUCCESS if successful / FAILURE if unsuccessful
+ */
 extern	ret_t	mv_stack_push(p_mv_stack_t pstack, data_t data)
 {
 	//	Code
@@ -101,6 +140,13 @@ extern	ret_t	mv_stack_push(p_mv_stack_t pstack, data_t data)
 	return( mv_dcll_insert_back(pstack->pdcll, data) );
 }
 
+// Stack Removal Function
+/**
+ * Function Name: mv_stack_pop
+ * Function Brief: This function pops data from top of stack
+ * Input Params: Pointer to the stack
+ * Returns: The popped data from the top of the stack
+ */
 extern	data_t	mv_stack_pop(p_mv_stack_t pstack)
 {
 	// Code
@@ -111,6 +157,13 @@ extern	data_t	mv_stack_pop(p_mv_stack_t pstack)
 	return( mv_dcll_remove_back(pstack->pdcll) );
 }
 
+// Stack getter Function
+/**
+ * Function Name: mv_stack_peek
+ * Function Brief: This function gives data at top of stack
+ * Input Params: Pointer to the stack
+ * Returns: The data at the top of the stack
+ */
 extern	data_t	mv_stack_peek(p_mv_stack_t pstack)
 {
 	//	Code
@@ -123,6 +176,13 @@ extern	data_t	mv_stack_peek(p_mv_stack_t pstack)
 	return(to_return_data);
 }
 
+// Stack Print Function
+/**
+ * Function Name: mv_stack_print
+ * Function Brief: This function prints the content of the stack
+ * Input Params: Pointer to the stack
+ * Returns: None
+ */
 extern	void 	mv_stack_print(p_mv_stack_t pstack, void (*pPrintDataFunc) (data_t) )
 {
 	//	Code
@@ -149,6 +209,14 @@ extern	void 	mv_stack_print(p_mv_stack_t pstack, void (*pPrintDataFunc) (data_t)
 	fprintf(stdout, "\n|\tSTART\t|\n\n\n");
 }
 
+// Stack Destroy Function
+/**
+ * Function Name: mv_stack_destroy
+ * Function Brief: This function destroys the stack and free its memory
+ * Input Params: Pointer to the pointer of the stack
+ * Returns: Status 
+ *			SUCCESS if successful / FAILURE if unsuccessful
+ */
 extern	ret_t	mv_stack_destroy(pp_mv_stack_t ppstack)
 {
 	// Code
@@ -171,3 +239,4 @@ extern	ret_t	mv_stack_destroy(pp_mv_stack_t ppstack)
 
 	return(SUCCESS);
 }
+

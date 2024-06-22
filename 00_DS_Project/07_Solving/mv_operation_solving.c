@@ -1,13 +1,28 @@
 
+/**
+ * @File: mv_operation_solving.c
+ * @Brief: This contains implementation of operations to be performed
+ * @Author: Janhavi Sunil Khisti(janhavikhisti@gmail.com)
+ * @Date: 12-06-2024
+ */
 
+// Headers
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "mv_expression_solving.h"
 
+// Global Declarations
 extern p_mv_dcll_t symbol_table;
 extern p_mv_dcll_t value_table;
 
+// Operation Solving Helper Functions
+/**
+ * Function Name: Xmalloc
+ * Function Brief: This function will allocate a memory of 'no_of_bytes' size
+ * Input Params: no_of_bytes
+ * Returns: The pointer to the memory dynamically allocated of 'no_of_bytes' size
+ */
 static void* xmalloc(size_t no_of_bytes)
 {
 	void* p = malloc(no_of_bytes);
@@ -21,6 +36,12 @@ static void* xmalloc(size_t no_of_bytes)
 	return(p);
 }
 
+/**
+ * Function Name: create_value_object
+ * Function Brief: This function creates value objects
+ * Input Params: None
+ * Returns: The value object
+ */
 static p_mv_value_object_t create_value_object()
 {
 	p_mv_value_object_t new_obj = (p_mv_value_object_t)xmalloc(SIZE_MV_VALUE_OBJECT);
@@ -38,6 +59,12 @@ static p_mv_value_object_t create_value_object()
 	return(new_obj);
 }
 
+/**
+ * Function Name: create_symbol_object
+ * Function Brief: This function creates symbol object
+ * Input Params: None
+ * Returns: The symbol object
+ */
 static p_mv_symbol_object_t create_symbol_object()
 {
 	p_mv_symbol_object_t new_obj = (p_mv_symbol_object_t)xmalloc(SIZE_MV_SYMBOL_OBJECT);
@@ -54,6 +81,12 @@ static p_mv_symbol_object_t create_symbol_object()
 	return(new_obj);
 }
 
+/**
+ * Function Name: locate_value_object
+ * Function Brief: This function locates value object in value table
+ * Input Params: data
+ * Returns: The value object
+ */
 static p_mv_value_object_t locate_value_object(data_t valdata)
 {
 	p_node_t prunner = value_table->p_head->p_next;
@@ -71,6 +104,12 @@ static p_mv_value_object_t locate_value_object(data_t valdata)
 	return(NULL);
 }
 
+/**
+ * Function Name: locate_symbol_object
+ * Function Brief: This function locates the symbol object in symbol table
+ * Input Params: data
+ * Returns: The symbol object
+ */
 static p_mv_symbol_object_t locate_symbol_object(data_t symdata)
 {
 	p_node_t prunner = symbol_table->p_head->p_next;
@@ -89,6 +128,13 @@ static p_mv_symbol_object_t locate_symbol_object(data_t symdata)
 	return(NULL);
 }
 
+/**
+ * Function Name: mv_str_compare_digits
+ * Function Brief: This function compares the digits in two given strings
+ * Input Params: 1) string1
+ *				 2) string2
+ * Returns: Status
+ */
 static ret_t mv_str_compare_digits(char* str1, char* str2)
 {
 	int le = 0;
@@ -106,76 +152,85 @@ static ret_t mv_str_compare_digits(char* str1, char* str2)
 	return(0);
 }
 
-
+/**
+ * Function Name: printtb
+ * Function Brief: this function prints symbol objects 
+ * Input Params: data
+ * Returns: void
+ */
 static void printtb(data_t data)
 {
-	printf("{%s}-", (char*)((p_mv_symbol_object_t)data)->data);
+	printf("%s", (char*)((p_mv_symbol_object_t)data)->data);
 }
 
+/**
+ * Function Name: print
+ * Function Brief: This function prints value objects 
+ * Input Params: data
+ * Returns: void
+ */
 static void print(data_t data)
 {
-	printf("{%s}-", (char*)((p_mv_value_object_t)data)->data);
+	printf("  %s", (char*)((p_mv_value_object_t)data)->data);
 }
 
+/**
+ * Function Name: generic_addition
+ * Function Brief: This function contains generic implementation of addition operation
+ * Input Params: 1) string1
+ *				 2) string2
+ * Returns: string (answer)
+ */
 static char* generic_addition(char* str1, char* str2)
 {
-	char* temp = NULL;
-	char* new_str = (char*)malloc(1024);
-	memset(new_str, 0, 1024);
 
-	if(mv_strlen(str1) > mv_strlen(str2))
+
+	long long len1 = mv_strlen(str1);
+	long long len2 = mv_strlen(str2);
+
+	char* temp = NULL;
+	long long temp_len = 0;
+	char* new_str = (char*)malloc(len1 + len2);
+	memset(new_str, 0, len1 + len2);
+
+	if(mv_strlen(str1) < mv_strlen(str2))
 	{
 		temp = str1;
 		str1 = str2;
 		str2 = temp;
-	}
 
-	int len1 = mv_strlen(str1);
-	int len2 = mv_strlen(str2);
+		temp_len = len1;
+		len1 = len2;
+		len2 = temp_len;
+	}
 
 	mv_strrev(str1);
 	mv_strrev(str2);
 
 	int carry = 0;
-
-	for(int le = 0; le < len1; le++)
+	int le = 0;
+	for( le = 0; le < len2; ++le )
 	{
-		int sum = ((str1[le]-'0') + (str2[le]-'0') + carry);	
-		carry = 0;
-		
-		if( sum > 9 )
-		{
-			carry = 1;
-			sum = sum - 10;
-		}
+		int result = (str1[le]-'0') + (str2[le]-'0') + carry;
 
-		new_str[le] = (sum+'0');
-	}	
+		int sum = result % 10;
+		carry = result / 10;
 
-	for(int le = len1; le < len2; le++)
-	{
-		int sum = ((str2[le]-'0') + carry);
-		carry = 0;			
-			
-		if( sum > 9 )
-		{
-			carry = 1;
-			sum = sum - 10;
-		}
-
-		new_str[le] = (sum+'0');
-	}
-	
-	if(carry)
-	{
-		new_str[len2] = (carry+'0');
+		new_str[le] = (char)(sum + '0');
 	}
 
-	new_str[len2+1] = '\0';
+	for(le; le < len1; ++le)
+	{
+		int result = (str1[le]-'0') + carry;
 
+		int sum = result % 10;
+		carry = result / 10;
+		new_str[le] = (char)(sum + '0');
+	}
+
+	new_str[le] = '\0';
+	new_str = (char*) realloc(new_str, mv_strlen(new_str)+1);
 	mv_strrev(new_str);
-
-	new_str = (char*)realloc(new_str, mv_strlen(new_str)+1);
 
 	return(new_str);
 
@@ -188,15 +243,10 @@ extern char* Addition(p_mv_object_t object1, p_mv_object_t object2)
 	char* str_obj1 = object1->object_value;
 	char* str_obj2 = object2->object_value;
 
-	// char* temp = NULL;
 	char* new_str = (char*)malloc(1024);
 	memset(new_str, 0, 1024);
 
 	new_str = generic_addition(str_obj1, str_obj2);
-
-	printf("Str : %s\n", new_str);
-
-	new_str = (char*)realloc(new_str, mv_strlen(new_str)+1);
 
 	free(object1->object_value);
 	object1->object_value = NULL;
@@ -284,15 +334,13 @@ extern char* Subtraction(p_mv_object_t object1, p_mv_object_t object2)
 
 	new_str[len1] = '\0';
 
+
+	new_str = (char*)realloc(new_str, mv_strlen(new_str));
+
 	mv_strrev(new_str);
-
-	new_str = (char*)realloc(new_str, mv_strlen(new_str)+1);
-
 	mv_strconcate(concate, new_str);
 
-	concate = (char*)realloc(concate, mv_strlen(concate)+1);
-
-	printf("Str = %s\n", concate);
+	concate = (char*)realloc(concate, mv_strlen(concate));
 	
 	free(object1->object_value);
 	object1->object_value = NULL;
@@ -306,8 +354,9 @@ extern char* Subtraction(p_mv_object_t object1, p_mv_object_t object2)
 	free(object2);
 	object2 = NULL;
 
-	return(concate);
+	free(new_str);
 
+	return(concate);
 } 
 
 
@@ -319,14 +368,10 @@ extern char* Multiplication(p_mv_object_t object1, p_mv_object_t object2)
 	p_mv_vector_t mul_result_vector = NULL;
 
 	char* str_obj1 = object1->object_value;
-	printf("str1 : %s\n", str_obj1);
-
 	char* str_obj2 = object2->object_value;
-	printf("str2 : %s\n", str_obj2);
 
-	char* new_str = (char*)malloc(1024);
-	memset(new_str, 0, 1024);
-
+	char* new_str = NULL;
+	
 	mul_result_vector = create_vector();
 
 	if(mv_strlen(str_obj1) > mv_strlen(str_obj2))
@@ -336,12 +381,10 @@ extern char* Multiplication(p_mv_object_t object1, p_mv_object_t object2)
 		str_obj2 = temp;
 	}
 
-	int len1 = mv_strlen(str_obj1);
-	//printf("len1 = %d\n", len1);
+	int len1 = mv_strlen(str_obj1);	
 
 	int len2 = mv_strlen(str_obj2);
-	//printf("len2 = %d\n", len2);
-
+	
 	mv_strrev(str_obj1);
 	mv_strrev(str_obj2);
 
@@ -378,28 +421,23 @@ extern char* Multiplication(p_mv_object_t object1, p_mv_object_t object2)
 
 			result[ole+ile] = (mul+'0');
 		}
+
 		if(carry)
 		{
 			result[ole+len2] = (carry+'0');
 			result[ole+len2+1] = '\0';
+
 		}
 		else
 		{
 			result[ole+len2] = '\0';
-		}
+
+		} 
 
 		result = (char*)realloc(result, mv_strlen(result)+1);
 
 		mv_vector_push_back(mul_result_vector, result);
-
-	}
-
-	printf("Vector_Size : %zd\n", mv_vector_size(mul_result_vector));
-
-	for(int le = 0; le < mv_vector_size(mul_result_vector); le++)
-	{
-	 	printf("Result Vector Data_1 : { %s }\n", (char*)mv_vector_data_at(mul_result_vector, le));
-	  		
+		printf("\n");
 	}
 
 	for(int le = mv_vector_size(mul_result_vector); le > 0; le--)
@@ -412,33 +450,25 @@ extern char* Multiplication(p_mv_object_t object1, p_mv_object_t object2)
 
 		temp_str1 = mv_vector_pop_back(mul_result_vector);
 		mv_strrev(temp_str1);
-		printf("temp_str1: %s\n", temp_str1);
 
 		temp_str2 = mv_vector_pop_back(mul_result_vector);
 		mv_strrev(temp_str2);
-		printf("temp_str2: %s\n\n", temp_str2);
-
+		
 		new_str = generic_addition(temp_str1, temp_str2);
+		
+		free(temp_str1);
+		free(temp_str2);
 
-		mv_strrev(new_str);
 		new_str = (char*)realloc(new_str, mv_strlen(new_str));
+		mv_strrev(new_str);
 
 		mv_vector_push_back(mul_result_vector, new_str);
-
-	}
-
-	for(int le = 0; le < mv_vector_size(mul_result_vector); le++)
-	{
-	 	printf("Result Vector Data_2 : { %s }\n", (char*)mv_vector_data_at(mul_result_vector, le));
-	  		
 	}
 
 	new_str = mv_vector_pop_back(mul_result_vector);
 	mv_strrev(new_str);
 
 	new_str = (char*)realloc(new_str, mv_strlen(new_str));
-
-	printf("Str = %s\n", new_str);
 	
 	free(object1->object_value);
 	object1->object_value = NULL;
@@ -452,8 +482,9 @@ extern char* Multiplication(p_mv_object_t object1, p_mv_object_t object2)
 	free(object2);
 	object2 = NULL;
 
-	return(new_str);
+	mv_vector_destroy(&mul_result_vector);
 
+	return(new_str);
 } 
 
 
@@ -539,6 +570,7 @@ extern void Assignment(p_mv_object_t object1, p_mv_object_t object2)
 
 	if( object2->object_type == MV_TYPE_IMMIDIATE )
 	{
+
 		valobj = locate_value_object(str_obj2);
 
 		if(valobj)
@@ -624,12 +656,9 @@ extern void Assignment(p_mv_object_t object1, p_mv_object_t object2)
 		return;
 	}
 
-	mv_dcll_print_forward(symbol_table, printtb);
+	//mv_dcll_print_forward(symbol_table, printtb);
 
 	mv_dcll_print_forward(value_table, print);
-
-	return;
-	//printf("Assignment(%s, %s)\n", str_obj1, str_obj2);
 
 }
 

@@ -1,22 +1,44 @@
 
+/**
+ * @File: mv_string.c
+ * @Brief: This contains definitions of functions declared in header file mv_string.h
+ * @Author: Janhavi Sunil Khisti(janhavikhisti@gmail.com)
+ * @Date: 20-06-2024
+ */
+
+// Headers
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "mv_string.h"
 
-// function definition
-// string length
+// String Function Definitions
+
+// String Length
+/**
+ * Function Name: mv_strlen
+ * Function Brief: This function gives length of string
+ * Input Params: string
+ * Returns: Length of string
+ */
 extern len_t mv_strlen(char* str)
 {
 	// Code
 	int le = 0;
 
 	for( le = 0; str[le] != '\0'; le++ );
-
 	return(le);
 }
 
-// string concate
+// String Concate
+/**
+ * Function Name: mv_strconcate
+ * Function Brief: This function concates two given strings
+ * Input Params: 1) string1
+ *				 2) string2	
+ * Returns: Status
+ *			SUCCESS if successful / FAILURE if unsuccessful
+ */
 extern ret_t mv_strconcate(char* str1, char* str2)
 {
 	int size1 = mv_strlen(str1);
@@ -32,7 +54,15 @@ extern ret_t mv_strconcate(char* str1, char* str2)
 	return(SUCCESS);
 }
 
-// string compare
+// String Compare
+/**
+ * Function Name: mv_strcmp
+ * Function Brief: This function compares two given strings
+ * Input Params: 1) string1
+ *				 2) string2
+ * Returns: Status 
+ * 			SUCCESS if successful / FAILURE if unsuccessful
+ */
 extern ret_t mv_strcmp(char* str1, char* str2)
 {
 	// code
@@ -54,6 +84,14 @@ extern ret_t mv_strcmp(char* str1, char* str2)
 	return(SUCCESS);
 }
 
+/**
+ * Function Name: mv_strcmp2
+ * Function Brief: This function compares two given strings
+ * Input Params: 1) string1
+ *				 2) string2
+ * Returns: Status 
+ * 			SUCCESS if successful / FAILURE if unsuccessful
+ */
 extern ret_t mv_strcmp2(char* str1, char* str2)
 {
 	if( mv_strlen(str1) == mv_strlen(str2) )
@@ -70,7 +108,14 @@ extern ret_t mv_strcmp2(char* str1, char* str2)
 	return(0);
 }
 
-// string copy
+// String Copy
+/**
+ * Function Name: mv_strcpy
+ * Function Brief: This function copys the given strings
+ * Input Params: 1) string1 dest
+ *				 2) string2 src
+ * Returns: copied string
+ */
 extern char* mv_strcpy(char* dest, char* src)
 {
 	// code
@@ -85,29 +130,46 @@ extern char* mv_strcpy(char* dest, char* src)
 	return(dest);
 }
 
-
+// String Reverse
+/**
+ * Function Name: mv_strrev
+ * Function Brief: This function reverses the given string 
+ * Input Params: string
+ * Returns: reversed string
+ */
 extern char* mv_strrev(char* str)
 {
 	// code
 	int length;
-	char temp;
+	int len = 0;
 
 	char* new_str = str;
-	length = mv_strlen(new_str) -1;
+	length = mv_strlen(new_str)-1;
+	len = length+1;
 
-	for(int le = 0; le < mv_strlen(new_str)/2; le++)
+	for(int le = 0; le < len/2; le++)
 	{
+		char temp;
 		temp = new_str[le];
 		new_str[le] = new_str[length];
 		new_str[length--]= temp;
 
 	}
 
+	new_str[len] = '\0';
+
 	return(new_str);
 }
 
 
-// string tokanization
+// String Tokanization
+/**
+ * Function Name: mv_strtok
+ * Function Brief: This function tokenized the given string
+ * Input Params: 1) string
+ *				 2) delim (delimiter)
+ * Returns: Pointer to token vector
+ */
 extern p_mv_vector_t mv_strtok(char* str, char* delim)
 {
 	// code
@@ -147,4 +209,5 @@ extern p_mv_vector_t mv_strtok(char* str, char* delim)
 	}
 	return(token_vector);
 }
+
 

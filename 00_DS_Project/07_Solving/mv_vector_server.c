@@ -1,4 +1,11 @@
 
+/**
+ * @File: mv_vector_server.c
+ * @Brief: This contains definitions of functions declared in header file mv_vector.h
+ * @Author: Janhavi Sunil Khisti(janhavikhisti@gmail.com)
+ * @Date: 20-06-2024
+ */
+
 // Headers
 #include	<stdio.h>
 #include	<stdlib.h>
@@ -24,7 +31,14 @@ void error_checking( const int 	 assert_condition,
 																								error_str);				\
 																			}	
 
-// Vector Helper Functions 		( only for developer)
+// Vector Helper Functions 		
+
+/**
+ * Function Name: Xmalloc
+ * Function Brief: This function will allocate a memory of 'nr_of_bytes' size
+ * Input Params: nr_of_bytes
+ * Returns: The pointer to the memory dynamically allocated 
+ */																
 static void* Xmalloc(size_t nr_of_bytes)
 {
 	// Code
@@ -36,6 +50,13 @@ static void* Xmalloc(size_t nr_of_bytes)
 	return(p);
 } 
 
+/**
+ * Function Name: Xcalloc
+ * Function Brief: This function will allocate a memory of 'nr_of_bytes' size for 'nr_of_elements'
+ * Input Params: 1) nr_of_elements
+ *				 2) nr_of_bytes
+ * Returns: The pointer to the memory dynamically allocated
+ */
 static void* Xcalloc(size_t nr_of_elements, size_t nr_of_bytes)
 {
 	// Code
@@ -47,6 +68,12 @@ static void* Xcalloc(size_t nr_of_elements, size_t nr_of_bytes)
 	return(p); 
 }
 
+/**
+ * Function Name: Xrealloc
+ * Function Brief: This function will reallocate a memory 
+ * Input Params: nr_of_bytes
+ * Returns: the pointer to the reallocated memory
+ */
 static void* Xrealloc(void* p, size_t nr_of_bytes)
 {
 	// Code
@@ -58,18 +85,17 @@ static void* Xrealloc(void* p, size_t nr_of_bytes)
 	return(rp);
 }
 
-
-/*
-  Function
-  	identifier	:	error_checking
-  	input		:	
-  					1) assertion condition
-  					2) assertion condition string
-  					3) file name
-  					4) line number
-  					5) error checking
-  					6) error string
-*/
+/**
+ * Function Name: error_checking
+ * Function Brief: This function will check error and either print erroe message of will do assertion
+ * Input Params: 1) Assert Condition
+ *               2) String of Assert condition
+ *               3) File where assertion occured
+ *               4) Line no where assertion occured
+ *               5) Error Condition
+ *               6) Error Message
+ * Returns: void
+ */
 void  error_checking( const int   assert_condition,
 					  const char* assert_condition_str,
 					  const char* file_name,
@@ -98,14 +124,14 @@ void  error_checking( const int   assert_condition,
 }		
 
 
-// Vector Interface Functions			( given to user to use vector)
+// Vector Interface Functions	
 
-/*
-  Function
-  	identifier	:	create_vector
-  	input		:	void
-  	output		:	pointer to struct
-*/
+/**
+ * Function Name: create_vector
+ * Function Brief: This function creates vector and returns pointer to it
+ * Input Params: void
+ * Returns: Pointer to vector
+ */
 extern p_mv_vector_t  create_vector(void)
 {
 	// Code
@@ -127,14 +153,14 @@ extern p_mv_vector_t  create_vector(void)
 	return(pvec);
 }
 
-
-/*
-  Function
-	identifier	:	mv_vector_push_back
-	input		:	1) vector
-					2) data
-	output		:	status(success or failure)
-*/
+/**
+ * Function Name: mv_vector_push_back
+ * Function Brief: This function pushes data into the vector
+ * Input Params: 1) vector
+ *				 2) data
+ * Returns: Status
+ *			SUCCESS if successful / FAILURE if unsuccessful
+ */
 extern ret_t mv_vector_push_back(p_mv_vector_t  pvector, data_t data)
 {
 	// Code
@@ -161,13 +187,12 @@ extern ret_t mv_vector_push_back(p_mv_vector_t  pvector, data_t data)
 	return(SUCCESS);
 }	
 
-
-/*
-  Function
-  	identifier	:	mv_vector_pop_back
-  	input		:	vector
-  	output		:	return popped data
-*/
+/**
+ * Function Name: mv_vector_pop_back
+ * Function Brief: This function pops dada from vector
+ * Input Params: vector
+ * Returns: The popped data from vector
+ */
 extern data_t mv_vector_pop_back(p_mv_vector_t  pvector)
 {
 	// Code
@@ -194,14 +219,13 @@ extern data_t mv_vector_pop_back(p_mv_vector_t  pvector)
 	return(to_return_data);
 }							
 
-
-/*
-  Function
-  	identifier	:	mv_vector_data_at
-  	input		:	1) vector
-  					2) index
-  	output		:	returns data at given index 
-*/
+/**
+ * Function Name: mv_vector_data_at
+ * Function Brief: This function gives data at given index in vector
+ * Input Params: 1) vector
+ *				 2) index
+ * Returns: The data at given index
+ */
 extern data_t  mv_vector_data_at(p_mv_vector_t  pvector, size_t index)
 {
 	// Code
@@ -218,13 +242,12 @@ extern data_t  mv_vector_data_at(p_mv_vector_t  pvector, size_t index)
 	return(pvector->array[ index ]);
 }								
 
-
-/*
-  Function
- 	identifier	:	mv_vector_size
- 	input		:	vector
- 	output		:	size of vector
-*/
+/**
+ * Function Name: mv_vector_size
+ * Function Brief: This function gives size of vector
+ * Input Params: vector
+ * Returns: The size of vector
+ */
 extern size_t  mv_vector_size(p_mv_vector_t  pvector)
 {
 	// Code
@@ -236,13 +259,12 @@ extern size_t  mv_vector_size(p_mv_vector_t  pvector)
 	return(pvector->nr_of_elements);
 }
 
-
-/*
-  Function
-	identifier	:	mv_vector_capacity
-	input		:	vector
-	output		:	capacity of vector
-*/
+/**
+ * Function Name: mv_vector_capacity
+ * Function Brief: This function gives capacity of vector
+ * Input Params: vector
+ * Returns: The capacity of vector
+ */
 extern size_t  mv_vector_capacity(p_mv_vector_t  pvector)
 {
 	// Code
@@ -254,16 +276,17 @@ extern size_t  mv_vector_capacity(p_mv_vector_t  pvector)
 	return(pvector->capacity);
 }
 
-
-/*
-  Function
- 	identifier	:	mv_vector_destroy 
- 	input		:	double pointer to vector
- 	output		:	status(success or failure)
-*/
+/**
+ * Function Name: mv_vector_destroy 
+ * Function Brief: This function distroys vector and free its memory
+ * Input Params: Pointer to pointer of vector
+ * Returns: Status 
+ *			SUCCESS if successful / FAILURE if unsuccessful
+ */
 extern ret_t  mv_vector_destroy(pp_mv_vector_t  ppvector)
 {
 	// Code
+
 	ERROR_CHECKING( NULL != ppvector,
 					NULL == ppvector,
 					"ERROR : Vector Not Found.\n");

@@ -1,16 +1,30 @@
 
+/**
+ * @File: mv_expression_solving.h
+ * @Brief: This contains function declarations for mv_expression_solving
+ * @Author: Janhavi Sunil Khisti(janhavikhisti@gmail.com)
+ * @Date: 12-06-2024
+ */
+
 #ifndef _MV_EXPRESSION_SOLVING_H
 #define _MV_EXPRESSION_SOLVING_H
 
+// Headers
 #include "mv_vector.h"
 #include "mv_stack.h"
 #include "mv_dcll.h"
 #include "mv_string.h"
 
-#define SUCCESS  0
-#define FAILURE  1
+//	Constant Literals
+#ifndef	SUCCESS	
+#define	SUCCESS 0
+#endif
 
-// type definition
+#ifndef	FAILURE
+#define	FAILURE	1
+#endif	
+
+// Type Definitions
 struct mv_object;
 
 typedef struct mv_object  mv_object_t;
@@ -26,6 +40,7 @@ typedef int len_t;
 typedef int type_t;
 typedef void* data_t;
 
+// Enums
 enum
 {
 	MV_TYPE_NONE = 0,
@@ -41,7 +56,7 @@ enum
 	MV_TYPE_EXPRESSION_NODE			 // 10
 };
 
-// struct type definition
+// Struct Type Definition
 struct mv_object
 {
 	int    object_type;
@@ -59,28 +74,59 @@ struct mv_expression_node
 
 #define SIZE_MV_EXPRESSION_NODE (sizeof(mv_expression_node_t))
 
+// Interface Functions for Expression Solving
 
-// // function declaration
-// extern len_t mv_strlen(char* str);
-// extern ret_t mv_strconcate(char* str1, char* str2);
-// extern ret_t mv_strcmp(char* str1, char* str2);
-// extern ret_t mv_strcmp2(char* str1, char* str2);
-// extern char* mv_strcpy(char* dest, char* src);
-// extern char* mv_strrev(char* str);
-
-// extern p_mv_vector_t mv_strtok(char* str, char* delim);
-
+/**
+ * Function Name: mv_type_checking
+ * Function Brief: This function gives type of tokenized string
+ * Input Params: string
+ * Returns: The type of string 
+ */
 extern type_t mv_type_checking(char* ip);
 
+/**
+ * Function Name: create_object_vector
+ * Function Brief: This function creates object vector
+ * Input Params: vector 
+ * Returns: vector
+ */
 extern p_mv_vector_t create_object_vector(p_mv_vector_t pvector);
 
+/**
+ * Function Name: get_operator_priority
+ * Function Brief: This function gives priority of operators
+ * Input Params: object
+ * Returns: The priority of operator
+ */
 extern ret_t get_operator_priority(p_mv_object_t obj);
+
+/**
+ * Function Name: create_expression_stack
+ * Function Brief: This function creates expression stack of given expression
+ * Input Params: vector 
+ * Returns: The created stack
+ */
 extern p_mv_stack_t create_expression_stack(p_mv_vector_t pvector);
+
+/**
+ * Function Name: create_expression_tree
+ * Function Brief: This function creates expression tree of given expression
+ * Input Params: stack
+ * Returns: The expression node object
+ */
 extern p_mv_object_t create_expression_tree(p_mv_stack_t expression_stack);
+
+/**
+ * Function Name: expression_solver
+ * Function Brief: This function actually solves the expression
+ * Input Params: object
+ * Returns: void
+ */
 extern void expression_solver(p_mv_object_t object);
 
 /*******************************************************************************/
 
+// Type Definitions
 struct mv_value_object;
 
 typedef struct mv_value_object  mv_value_object_t;
@@ -91,6 +137,7 @@ struct mv_symbol_object;
 typedef struct mv_symbol_object  mv_symbol_object_t;
 typedef struct mv_symbol_object* p_mv_symbol_object_t;
 
+// Struct Type Definitions
 struct mv_value_object
 {
 	type_t type;
@@ -106,6 +153,7 @@ struct mv_symbol_object
 };
 #define SIZE_MV_SYMBOL_OBJECT (sizeof(mv_symbol_object_t))
 
+// Enums
 enum 
 {
 	NO = 0,
@@ -114,7 +162,7 @@ enum
 	MV_TYPE_DOUBLE	// 3
 };
 
-// Operation Solving 
+// Interface Functions for Operation Solving 
 
 extern char* Addition(p_mv_object_t object1, p_mv_object_t object2);
 extern char* Subtraction(p_mv_object_t object1, p_mv_object_t object2);
@@ -122,8 +170,6 @@ extern char* Multiplication(p_mv_object_t object1, p_mv_object_t object2);
 extern char* Division(p_mv_object_t object1, p_mv_object_t object2);
 extern char* Modulous(p_mv_object_t object1, p_mv_object_t object2);
 extern void Assignment(p_mv_object_t object1, p_mv_object_t object2);
-
-
 
 #endif   /* _MV_EXPRESSION_SOLVING_H */
 

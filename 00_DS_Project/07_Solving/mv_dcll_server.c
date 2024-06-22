@@ -1,4 +1,11 @@
 
+/**
+ * @File: mv_dcll_server.c
+ * @Brief: This contains definitions of functions declared in header file mv_dcll.h
+ * @Author: Janhavi Sunil Khisti(janhavikhisti@gmail.com)
+ * @Date: 20-06-2024
+ */
+
 //  Headers
 #include    <stdio.h>
 #include    <stdlib.h>
@@ -70,9 +77,10 @@ static void* exit_program(void* param);
 //  List Helper Functions
 
 /**
- * @function    This function will allocate a memory of 'no_of_bytes' size
- * @params      no_of_bytes
- * @returns     the pointer to the memory dynamically allocated of 'no_of_bytes' size
+ * Function Name: Xmalloc
+ * Function Brief: This function will allocate a memory of 'no_of_bytes' size
+ * Input Params: no_of_bytes
+ * Returns: The pointer to the memory dynamically allocated of 'no_of_bytes' size
  */
 static void* Xmalloc(size_t no_of_bytes)
 {
@@ -89,16 +97,17 @@ static void* Xmalloc(size_t no_of_bytes)
 } 
 
 /**
- * @function    This function will check error and either print erroe message of will do assertion
- * @params      1) Assert Condition
- *              2) String of Assert condition
- *              3) File where assertion occured
- *              4) Line no where assertion occured
- *              5) Error Condition
- *              6) Error Message
- *              7) Error Handler
- *              8) Params for Error Handler
- * @returns     Status of the error / asssert checking
+ * Function Name: error_checking
+ * Function Brief: This function will check error and either print erroe message of will do assertion
+ * Input Params: 1) Assert Condition
+ *               2) String of Assert condition
+ *               3) File where assertion occured
+ *               4) Line no where assertion occured
+ *               5) Error Condition
+ *               6) Error Message
+ *               7) Error Handler
+ *               8) Params for Error Handler
+ * Returns: Status of the error / asssert checking
  */
 static  ret_t   error_checking( const int assert_condition,
                                 const char* assert_condition_str,
@@ -145,9 +154,10 @@ static  ret_t   error_checking( const int assert_condition,
 }
 
 /**
- * @function    This function will exit the executing program
- * @params      Pointer to void
- * @returns     Pointer to void
+ * Function Name: exit_program
+ * Function Brief: This function will exit the executing program
+ * Input Params: Pointer to void
+ * Returns: Pointer to void
  */
 static void* exit_program(void* param)
 {
@@ -158,9 +168,10 @@ static void* exit_program(void* param)
 }
 
 /**
- * @function    This function will create a node 
- * @params      New data to assign to new node
- * @returns     pointer to allocated node
+ * Function Name: create_node
+ * Function Brief: This function will create a node
+ * Input Params: New data to assign to new node
+ * Returns: pointer to allocated node
  */
 static p_node_t create_node(data_t new_data)
 {
@@ -181,9 +192,10 @@ static p_node_t create_node(data_t new_data)
 }
 
 /**
- * @function    This function will create an object of DOUBLY CIRCULAR LINKED LIST
- * @params  
- * @returns     The pointer the new list object
+ * Function Name: create_list
+ * Function Brief: This function will create an object of DOUBLY CIRCULAR LINKED LIST
+ * Input Params: void
+ * Returns: The pointer the new list object
  */
 static p_mv_dcll_t create_list(void)
 {
@@ -209,12 +221,13 @@ static p_mv_dcll_t create_list(void)
 }
 
 /**
- * @function    This function is going to insert a new node the DCLL
- * @params      1)  List
- *              2)  First (Previous Node for new node)
- *              3)  Mid (New Node)
- *              4)  Last  (Next Node for new node)
- * @returns     status
+ * Function Name: mv_dcll_generic_insert
+ * Function Brief: This function is going to insert a new node the DCLL
+ * Input Params: 1)  List
+ *               2)  First (Previous Node for new node)
+ *               3)  Mid (New Node)
+ *               4)  Last  (Next Node for new node)
+ * Returns: status
  */
 static ret_t mv_dcll_generic_insert(p_mv_dcll_t plist, p_node_t first,  p_node_t mid, p_node_t last)
 {
@@ -238,10 +251,11 @@ static ret_t mv_dcll_generic_insert(p_mv_dcll_t plist, p_node_t first,  p_node_t
 }
 
 /**
- * @function    This function will remove the 'd_node' from the list
- * @params      1) List
- *              2) To Remove node
- * @returns     The data of the removed node
+ * Function Name: mv_dcll_generic_remove
+ * Function Brief: This function will remove the 'd_node' from the list
+ * Input Params: 1) List
+ *               2) To Remove node
+ * Returns: The data of the removed node
  */
 static data_t mv_dcll_generic_remove(p_mv_dcll_t plist, p_node_t d_node)
 {
@@ -273,17 +287,18 @@ static data_t mv_dcll_generic_remove(p_mv_dcll_t plist, p_node_t d_node)
 }
 
 /**
- * @function    This function checks for list present and list empty
- * @params      1) List
- *              2) Condition to check
- * @return      Status of the condition checking
+ * Function Name: check_list_conditions
+ * Function Brief: This function checks for list present and list empty
+ * Input Params: 1) List
+ *               2) Condition to check
+ * Returns: Status of the condition checking
  */
 static ret_t check_list_conditions(p_mv_dcll_t plist, int conditions)
 {
     // Code
     if( CHECK_LIST & conditions )
     {
-        RETURN_FAILURE( ERROR_CHECKING( 1,
+        RETURN_FAILURE( ERROR_CHECKING( NULL != plist,
                                         NULL == plist,
                                         "ERROR: List not found",
                                         NULL,
@@ -294,7 +309,8 @@ static ret_t check_list_conditions(p_mv_dcll_t plist, int conditions)
     {
         RETURN_FAILURE( ERROR_CHECKING( 1,
                                         plist->p_head == plist->p_tail,
-                                        "ERROR: List is empty",
+                                        //"ERROR: List is empty",
+                                        "ERROR : Not Value Object",
                                         NULL,
                                         NULL) ); 
     }
@@ -305,9 +321,10 @@ static ret_t check_list_conditions(p_mv_dcll_t plist, int conditions)
 //  List Interface Functions
 
 /**
- * @function    This function will return a pointer to an DOUBLY CIRCULAR LIST OBJECT
- * @params  
- * @returns     pointer to the created list object 
+ * Function Name: create_doubly_circular_list
+ * Function Brief: This function will return a pointer to an DOUBLY CIRCULAR LIST OBJECT
+ * Input Params: None
+ * Returns: pointer to the created list object
  */
 extern p_mv_dcll_t  create_doubly_circular_list()
 {
@@ -317,11 +334,12 @@ extern p_mv_dcll_t  create_doubly_circular_list()
 
 //  List Data Insertion Functions
 /**
- * @function    This function will add a new data to the BACK of the list
- * @params      1) List
- *              2) New Data
- * @returns     status of insertion
- *              SUCCESS if successful / FAILURE if unsuccessful
+ * Function Name: mv_dcll_insert_back
+ * Function Brief: This function will add a new data to the BACK of the list
+ * Input Params: 1) List
+ *               2) New Data
+ * Returns: status of insertion
+ *          SUCCESS if successful / FAILURE if unsuccessful
  */
 extern ret_t mv_dcll_insert_back(p_mv_dcll_t plist, data_t new_data)
 {
@@ -340,11 +358,12 @@ extern ret_t mv_dcll_insert_back(p_mv_dcll_t plist, data_t new_data)
 }
 
 /**
- * @function    This function will add a new data to the FRONT of the list
- * @params      1) List
- *              2) New Data
- * @returns     status of insertion
- *              SUCCESS if successful / FAILURE if unsuccessful
+ * Function Name: mv_dcll_insert_front
+ * Function Brief: This function will add a new data to the FRONT of the list
+ * Input Params: 1) List
+ *               2) New Data
+ * Returns: status of insertion
+ *          SUCCESS if successful / FAILURE if unsuccessful
  */
 extern ret_t mv_dcll_insert_front(p_mv_dcll_t plist, data_t new_data)
 {
@@ -363,12 +382,13 @@ extern ret_t mv_dcll_insert_front(p_mv_dcll_t plist, data_t new_data)
 }
 
 /**
- * @function    This function will add a new data at a specified INDEX in the list
- * @params      1) List
- *              2) New Data
- *              3) INDEX
- * @returns     status of insertion
- *              SUCCESS if successful / FAILURE if unsuccessful
+ * Function Name: mv_dcll_insert_at
+ * Function Brief: This function will add a new data at a specified INDEX in the list
+ * Input Params: 1) List
+ *               2) New Data
+ *               3) INDEX
+ * Returns: status of insertion
+ *          SUCCESS if successful / FAILURE if unsuccessful
  */
 extern ret_t mv_dcll_insert_at(p_mv_dcll_t plist, data_t new_data, size_t index)
 {
@@ -406,13 +426,14 @@ extern ret_t mv_dcll_insert_at(p_mv_dcll_t plist, data_t new_data, size_t index)
 }
 
 /**
- * @function    This function will add a new data BEFORE an existing data
- * @params      1) List
- *              2) New Data
- *              3) Existing Data
- *              4) Compare Callback function pointer
- * @returns     status of insertion
- *              SUCCESS if successful / FAILURE if unsuccessful
+ * Function Name: mv_dcll_insert_before
+ * Function Brief: This function will add a new data BEFORE an existing data
+ * Input Params: 1) List
+ *               2) New Data
+ *               3) Existing Data
+ *               4) Compare Callback function pointer
+ * Returns: status of insertion
+ *          SUCCESS if successful / FAILURE if unsuccessful
  */
 extern ret_t mv_dcll_insert_before(p_mv_dcll_t plist, data_t new_data, data_t e_data, COMPAREDATAPROC  pcomparedataproc)
 {
@@ -454,13 +475,14 @@ extern ret_t mv_dcll_insert_before(p_mv_dcll_t plist, data_t new_data, data_t e_
 }
 
 /**
- * @function    This function will add a new data AFTER an existing data
- * @params      1) List
- *              2) New Data
- *              3) Existing Data
- *              4) Compare Callback function pointer
- * @returns     status of insertion
- *              SUCCESS if successful / FAILURE if unsuccessful
+ * Function Name: mv_dcll_insert_after
+ * Function Brief: This function will add a new data AFTER an existing data
+ * Input Params: 1) List
+ *               2) New Data
+ *               3) Existing Data
+ *               4) Compare Callback function pointer
+ * Returns: status of insertion
+ *          SUCCESS if successful / FAILURE if unsuccessful
  */
 extern ret_t mv_dcll_insert_after(p_mv_dcll_t plist, data_t new_data, data_t e_data, COMPAREDATAPROC pcomparedataproc)
 {
@@ -502,10 +524,12 @@ extern ret_t mv_dcll_insert_after(p_mv_dcll_t plist, data_t new_data, data_t e_d
 }
 
 //  List Data Removal Functions
+
 /**
- * @function    This function will remove data from BACK of the list
- * @params      List
- * @returns     Removed data from the list OR NULL if no data.
+ * Function Name: mv_dcll_remove_back
+ * Function Brief: This function will remove data from BACK of the list
+ * Input Params: List
+ * Returns: Removed data from the list OR NULL if no data.
  */
 extern data_t mv_dcll_remove_back(p_mv_dcll_t plist)
 {
@@ -521,9 +545,10 @@ extern data_t mv_dcll_remove_back(p_mv_dcll_t plist)
 }
 
 /**
- * @function    This function will remove data from FRONT of the list
- * @params      List
- * @returns     Removed data from the list OR NULL if no data.
+ * Function Name: mv_dcll_remove_front
+ * Function Brief: This function will remove data from FRONT of the list
+ * Input Params: List
+ * Returns: Removed data from the list OR NULL if no data.
  */
 extern data_t mv_dcll_remove_front(p_mv_dcll_t plist)
 {
@@ -538,10 +563,11 @@ extern data_t mv_dcll_remove_front(p_mv_dcll_t plist)
 }
 
 /**
- * @function    This function will remove data from list from a specific INDEX
- * @params      1) List
- *              2) INDEX
- * @returns     Removed data from the list OR NULL if no data.
+ * Function Name: mv_dcll_remove_at
+ * Function Brief: This function will remove data from list from a specific INDEX
+ * Input Params: 1) List
+ *               2) INDEX
+ * Returns: Removed data from the list OR NULL if no data. 
  */
 extern data_t mv_dcll_remove_at(p_mv_dcll_t plist, size_t index)
 {
@@ -567,11 +593,12 @@ extern data_t mv_dcll_remove_at(p_mv_dcll_t plist, size_t index)
 }
 
 /**
- * @function    This function will remove data BEFORE an existing data
- * @params      1) List
- *              2) Existing Data
- *              3) Compare Callback function pointer
- * @returns     Removed data form the list OR NULL if no data.
+ * Function Name: mv_dcll_remove_before
+ * Function Brief: This function will remove data BEFORE an existing data
+ * Input Params: 1) List
+ *               2) Existing Data
+ *               3) Compare Callback function pointer
+ * Returns: Removed data form the list OR NULL if no data.
  */
 extern data_t mv_dcll_remove_before(p_mv_dcll_t plist, data_t e_data, COMPAREDATAPROC pcomparedataproc)
 {
@@ -611,11 +638,12 @@ extern data_t mv_dcll_remove_before(p_mv_dcll_t plist, data_t e_data, COMPAREDAT
 }
 
 /**
- * @function    This function will remove data AFTER an existing data
- * @params      1) List
- *              2) Existing Data
- *              3) Compare Callback function pointer
- * @returns     Removed data from the list OR NULL is no data.
+ * Function Name: mv_dcll_remove_after
+ * Function Brief: This function will remove data AFTER an existing data
+ * Input Params: 1) List
+ *               2) Existing Data
+ *               3) Compare Callback function pointer
+ * Returns: Removed data from the list OR NULL is no data.
  */
 extern data_t mv_dcll_remove_after(p_mv_dcll_t plist, data_t e_data, COMPAREDATAPROC pcomparedataproc)
 {
@@ -658,9 +686,10 @@ extern data_t mv_dcll_remove_after(p_mv_dcll_t plist, data_t e_data, COMPAREDATA
 //  List Data Getter Functions
 
 /**
- * @function    This function will return the head data of the list
- * @params      List
- * @returns     Data of head of the list if present else NULL.
+ * Function Name: mv_dcll_get_head
+ * Function Brief: This function will return the head data of the list
+ * Input Params: List
+ * Returns: Data of head of the list if present else NULL.
  */
 extern data_t mv_dcll_get_head(p_mv_dcll_t plist)
 {
@@ -675,9 +704,10 @@ extern data_t mv_dcll_get_head(p_mv_dcll_t plist)
 }
 
 /**
- * @function    This function will return the tail of the list 
- * @params      List
- * @returns     Data of tail of the list if present else NULL.
+ * Function Name: mv_dcll_get_tail
+ * Function Brief: This function will return the tail of the list
+ * Input Params: List
+ * Returns: Data of tail of the list if present else NULL.
  */
 extern data_t mv_dcll_get_tail(p_mv_dcll_t plist)
 {
@@ -692,9 +722,10 @@ extern data_t mv_dcll_get_tail(p_mv_dcll_t plist)
 }
 
 /**
- * @function    This function will return the size(no of elements) of list
- * @params      List
- * @returns     Size(No of elements)
+ * Function Name: mv_dcll_get_size
+ * Function Brief: This function will return the size(no of elements) of list
+ * Input Params: List
+ * Returns: Size(No of elements)
  */
 extern size_t mv_dcll_get_size(p_mv_dcll_t plist)
 {
@@ -710,10 +741,11 @@ extern size_t mv_dcll_get_size(p_mv_dcll_t plist)
 }
 
 /**
- * @function    This function will return if list is present or not
- * @params      List
- * @returns     TRUE is list present 
- *              FALSE if list not present
+ * Function Name: mv_dcll_empty
+ * Function Brief: This function will return if list is present or not
+ * Input Params: List
+ * Returns: TRUE is list present 
+ *          FALSE if list not present
  */
 extern bool_t mv_dcll_empty(p_mv_dcll_t plist)
 {
@@ -725,11 +757,13 @@ extern bool_t mv_dcll_empty(p_mv_dcll_t plist)
 }
 
 //  List Show Data Functions
+
 /**
- * @function    This function will print the data in forward order
- * @params      1) List
- *              2) Show Data Callback function pointer
- * @returns     Status of printing data
+ * Function Name: mv_dcll_print_forward
+ * Function Brief: This function will print the data in forward order
+ * Input Params: 1) List
+ *               2) Show Data Callback function pointer
+ * Returns: Status of printing data
  */
 extern ret_t mv_dcll_print_forward(p_mv_dcll_t plist, SHOWDATAPROC pshowdataproc)
 {
@@ -745,25 +779,24 @@ extern ret_t mv_dcll_print_forward(p_mv_dcll_t plist, SHOWDATAPROC pshowdataproc
                                     "ERROR: Show Data Proc must not be NULL.",
                                     NULL,
                                     NULL) );
-    //printf("--3");
 
     p_node_t prunner = plist->p_head->p_next;
 
-    fprintf(stdout, "\nDOUBLY CIRCULAR LIST FORWARD:\n");
-    fprintf(stdout, "{START}->");
+    //fprintf(stdout, "\nDOUBLY CIRCULAR LIST FORWARD:\n");
+    //fprintf(stdout, "{START}->");
     for( prunner; prunner != plist->p_head; prunner = prunner->p_next )
         pshowdataproc(prunner->key);
-    fprintf(stdout, "{END}\n");
-    //printf("--4");
+    //fprintf(stdout, "{END}\n");
 
     return(SUCCESS);
 }
 
 /**
- * @function    This function will print the data in reverse order
- * @params      1) List
- *              2) Show Data Callback function pointer
- * @returns     Staus of printing data
+ * Function Name: mv_dcll_print_reverse
+ * Function Brief: This function will print the data in reverse order
+ * Input Params: 1) List
+ *               2) Show Data Callback function pointer
+ * Returns: Staus of printing data
  */
 extern ret_t mv_dcll_print_reverse(p_mv_dcll_t plist, SHOWDATAPROC pshowdataproc)
 {
@@ -789,10 +822,11 @@ extern ret_t mv_dcll_print_reverse(p_mv_dcll_t plist, SHOWDATAPROC pshowdataproc
 }
 
 /**
- * @function    This function will destroy the passed list
- * @params      1) Pointer to list
- *              2) Destroy Data Callback function pointer
- * @returns     Status of detroying the list
+ * Function Name: mv_dcll_destroy
+ * Function Brief: This function will destroy the passed list
+ * Input Params: 1) Pointer to list
+ *               2) Destroy Data Callback function pointer
+ * Returns: Status of detroying the list
  */
 extern ret_t mv_dcll_destroy(pp_mv_dcll_t pplist)
 {
@@ -838,3 +872,4 @@ extern ret_t mv_dcll_destroy(pp_mv_dcll_t pplist)
 
     return(SUCCESS);
 }
+

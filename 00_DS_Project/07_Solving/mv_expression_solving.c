@@ -1,10 +1,17 @@
 
+/**
+ * @File: mv_expression_solving.c
+ * @Brief: This contains definitions of functions declared in header file mv_expression_solving.h
+ * @Author: Janhavi Sunil Khisti(janhavikhisti@gmail.com)
+ * @Date: 12-06-2024
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "mv_expression_solving.h"
 
-
+// Helper Functions 
 static ret_t check_immediate(char* input)
 {
 	// code
@@ -84,17 +91,14 @@ extern type_t mv_type_checking(char* ip)
 	// Code
 	if(!check_immediate(ip))
 	{
-		//printf("IP %s is Immediate\n", ip);
 		return(MV_TYPE_IMMIDIATE);			
 	}
 	else if(!check_identifier(ip))
 	{
-		//printf("IP %s is Identifier\n", ip);
 		return(MV_TYPE_IDENTIFIER);
 	}
 	else if(!check_operator(ip))
 	{
-		//printf("IP %s is Operator\n", ip);
 		return(MV_TYPE_OPERATOR);
 	}
 	else
@@ -165,32 +169,26 @@ static ret_t operator_type(p_mv_object_t input)
 	switch(*str)
 	{
 		case '=':
-			//printf("Priority -- 0\n");
 			return(MV_TYPE_OPERATOR_EQUAL);
 			break;
 
 		case '+':
-			//printf("Priority -- 1\n");
 			return(MV_TYPE_OPERATOR_ADDITION);
 			break;
 
 		case '-':
-			//printf("Priority -- 1\n");
 			return(MV_TYPE_OPERATOR_SUBTRACTION);
 			break;
 
 		case '*':
-			//printf("Priority -- 2\n");
 			return(MV_TYPE_OPERATOR_MULTIPLICATION);
 			break;
 
 		case '/':
-			//printf("Priority -- 2\n");
 			return(MV_TYPE_OPERATOR_DIVISION);
 			break;
 
 		case '%':
-			//printf("Priority -- 2\n");
 			return(MV_TYPE_OPERATOR_MODULOUS);
 			break;
 
@@ -206,28 +204,27 @@ extern ret_t get_operator_priority(p_mv_object_t obj)
 	switch(operator_type(obj))
 	{
 		case MV_TYPE_OPERATOR_EQUAL:
-			//printf("Priority -- 0\n");
 			return(0);
 
 		case MV_TYPE_OPERATOR_ADDITION:
 		case MV_TYPE_OPERATOR_SUBTRACTION:
-			//printf("Priority -- 1\n");
 			return(1);
 
 		case MV_TYPE_OPERATOR_MULTIPLICATION:
 		case MV_TYPE_OPERATOR_DIVISION:
 		case MV_TYPE_OPERATOR_MODULOUS:
-			//printf("Priority -- 2\n");
 			return(2);
 
 	}
 	return(0);
 }
 
+/*
 void stack_print_data(data_t data)
 {
 	printf("|\t%d\t|\n", ((p_mv_object_t)data)->object_type);
 }
+*/
 
 static long long mv_stack_size(p_mv_stack_t pstack)
 {
@@ -285,7 +282,7 @@ extern p_mv_stack_t create_expression_stack(p_mv_vector_t pvector)
 
 			}
 			
-			//mv_stack_push(expression_stack, obj);
+			mv_stack_push(expression_stack, obj);
 
 			current_operator_priority = new_operator_priority;
 		}
@@ -304,11 +301,10 @@ extern p_mv_object_t create_expression_tree(p_mv_stack_t expression_stack)
 	{
 		p_mv_expression_node_t ex_node = create_expression_node();
 
-		//printf(" -- Right -- \n");
 		ex_node->right = mv_stack_pop(expression_stack);
-		//printf(" -- Operator --\n");
+		
 		ex_node->operator = mv_stack_pop(expression_stack);
-		//printf(" -- Left --\n");
+		
 		ex_node->left = mv_stack_pop(expression_stack);
 
 		p_mv_object_t ex_object = create_object();
@@ -324,13 +320,13 @@ extern p_mv_object_t create_expression_tree(p_mv_stack_t expression_stack)
 		{
 			return(ex_object);
 		}
-		
 	}
 }
 
 /*******************************************************************************/
 extern void expression_solver(p_mv_object_t object)
 {
+
 	if( (((p_mv_expression_node_t)object->object_value)->left)->object_type == MV_TYPE_EXPRESSION_NODE )
 	{
 		expression_solver(((p_mv_expression_node_t)object->object_value)->left);
@@ -377,12 +373,13 @@ extern void expression_solver(p_mv_object_t object)
 
 			result = Multiplication( ((p_mv_expression_node_t)object->object_value)->left, ((p_mv_expression_node_t)object->object_value)->right );
 
+
 			free(expression_node);
 			expression_node = NULL;
 
 			object->object_value = result;
 			object->object_type = MV_TYPE_IMMIDIATE;
-
+ 	
 			break;
 
 		case MV_TYPE_OPERATOR_DIVISION:
